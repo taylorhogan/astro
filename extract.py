@@ -29,7 +29,7 @@ def make_dir_for_object(date_dir, object_name):
 def move_images(from_path, to_path, pattern):
     print(from_path, to_path, pattern)
 
-
+#
 def extract(argv):
     in_path = sys.argv[1]
     out_path = sys.argv[2]
