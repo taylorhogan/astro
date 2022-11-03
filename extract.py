@@ -1,6 +1,8 @@
 import datetime
+import glob
 import os
 import sys
+import shutil
 
 
 def make_dir_for_object(date_dir, object_name):
@@ -25,11 +27,19 @@ def make_dir_for_object(date_dir, object_name):
     os.mkdir(os.path.join(spectrum, "darks"))
     os.mkdir(os.path.join(spectrum, "flats"))
 
+    return obj
 
-def move_images(from_path, to_path, pattern):
-    print(from_path, to_path, pattern)
 
-#gg
+def move_images(from_path, to_path, file_pattern, sub_dir):
+    print(from_path, to_path, file_pattern, sub_dir)
+    lights = os.path.join(from_path, file_pattern)
+
+    to_dest = os.path.join(to_path, sub_dir)
+    for filename in glob.glob(lights):
+        print("Moving " + filename + " to " + to_dest)
+        shutil.move(filename, to_dest)
+
+
 def extract(argv):
     in_path = sys.argv[1]
     out_path = sys.argv[2]
@@ -49,10 +59,14 @@ def extract(argv):
             exists = os.path.exists(date_of_capture)
             if not exists:
                 os.mkdir(date_of_capture)
-            make_dir_for_object(date_of_capture, filename)
+            to_object_dir = make_dir_for_object(date_of_capture, filename)
             # now go through all the images on from and move
+            move_images(object_dir, to_object_dir, "*_Ha_*.fit", "Ha/lights")
+            move_images(object_dir, to_object_dir, "*_O_*.fit", "O/lights")
+            move_images(object_dir, to_object_dir, "*_S_*.fit", "S/lights")
 
 
 if __name__ == '__main__':
     print("foo")
     extract(sys.argv[1:])
+# python extract.py /Volumes/ASTRO/ASIAIR/Autorun ~/Desktop/test
