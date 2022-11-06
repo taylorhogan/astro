@@ -22,6 +22,10 @@ def make_dir_for_object(date_dir, object_name):
     spectrums = ["Ha", "S", "O", "RGB", "R", "G", "B", "NONE"]
 
     obj = os.path.join(date_dir, object_name)
+    exists = os.path.exists(obj)
+    if exists:
+        print("Ignoring duplicate:" + obj)
+        return obj
     os.mkdir(obj)
 
     for spectrum in spectrums:
@@ -43,7 +47,6 @@ def copy_images(copied_set, from_path, to_path, file_pattern, sub_dir):
     for filename in glob.glob(lights):
         print("Moving " + filename + " to " + to_dest)
         if filename not in copied_set:
-
             files_copied = files_copied + 1
             shutil.copy(filename, to_dest)
             copied_set.add(filename)
@@ -56,6 +59,7 @@ def extract(argv):
     out_path = sys.argv[2]
     copied_files = {""}
 
+    # look for a directory under the root dir call Light
     print(in_path + " " + out_path)
     lights = os.path.join(in_path, "Light")
 

@@ -1,0 +1,43 @@
+
+
+
+requires 0.99.4
+
+#preprocess Ha/lights
+cd Ha/lights
+convert light -out=../process
+cd ../process
+
+#align lights
+register light 
+
+
+
+
+
+#stack lights
+stack r_light rej 3 3 -norm=addscale -output_norm -out=../stacked
+
+
+
+
+cd ../../O/lights
+convert light -out=../process
+cd ../process
+
+#align lights
+register light
+
+#stack lights
+stack r_light rej 3 3 -norm=addscale -output_norm -out=../stacked
+
+cd ../../S/lights
+convert light -out=../process
+cd ../process
+
+#align lights
+register light
+
+#stack lights
+stack r_light rej 3 3 -norm=addscale -output_norm -out=../stacked
+
